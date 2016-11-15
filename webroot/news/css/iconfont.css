@@ -1,0 +1,42 @@
+
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1476241458'); /* IE9*/
+  src: url('iconfont.eot?t=1476241458#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1476241458') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1476241458') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1476241458#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:20px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-meishi:before { content: "\e610"; }
+.icon-dianying:before { content: "\e60d"; }
+.icon-yingsaitong:before { content: "\e600"; }
+.icon-guanzhu:before { content: "\e62c"; }
+.icon-shezhi:before { content: "\e61a"; }
+.icon-sousuo:before { content: "\e604"; }
+footer {
+	width:100%;
+	position: fixed;
+	bottom: 0;
+	left:0;
+  height: 44px;
+  background-color: #f0f4f3;
+}
+.fot{display: flex;flex-direction: inherit;width:100%;color:#d00d55;}
+.fot span{font-size: 12px;margin-top:-6px;}
+.foot1,.foot2,.foot3{flex:1;text-align: center;
+font-size: 20px;width:100%;}
+.foot1 span,.foot2 span,.foot3 span{display:block;flex:1;}
+.iconfont{text-align: center;padding-top: 6px;z-index:100}
+/*i.icon-sousuo{position:absolute;/*left:35%;*/top:-6px;color:grey;
+/*z-index:100;*/display: block;}*/
+.weui-panel_access h4,weui-panel_access p{text-align:center;overflow: hidden;white-space: nowrap;width:200px;}
+#content{margin-bottom:20px;}
+.weui-panel__ft{margin-bottom:16px}

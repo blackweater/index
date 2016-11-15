@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jorden">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div ng-controller="demo">
+		{{name}}
+	</div>
+	<div ng-controller="demo1">
+		{{name}}
+	</div>
+	<script src="js/angular/angular.min.js"></script>
+	<script type="text/javascript">
+		var app=angular.module('jorden', []);
+		app.controller('demo', ['$scope','callback','$http', function($scope,callback,$http){
+			$scope.name="jorden";
+			
+			callback.test();
+			
+
+		}])
+		app.controller('demo1', ['$scope','callback','$http', function($scope,callback,$http){
+			$scope.name="li";
+			
+			callback.test();
+			
+
+		}])
+		app.service('callback',function($http){
+			console.log(this);
+			this.test=function(){
+				$http({
+					url:'test.json',
+					method:'GET',
+
+
+				}).success(function(data){
+					console.log(data);
+					console.log(this);
+				})
+			}
+			
+
+		})
+
+	</script>
+</body>
+</html>

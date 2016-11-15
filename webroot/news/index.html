@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html ng-app="weater">
+	<head>
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+		<meta charset="UTF-8">
+		<title>今日头条</title>	
+		<script src="js/ionic.bundle.min.js"></script>
+	<link rel="stylesheet" href="css/reset.css"  />
+	<link rel="stylesheet" href="css/ionic.css" />
+	<link rel="stylesheet" href="css/weui.css" />	
+	<link rel="stylesheet" href="css/iconfont.css">	
+	</head>
+	<body>
+		<weui-tab></weui-tab>
+		<div ui-view=""></div>
+	<footer>
+		<section class="fot">
+		<div class="foot1"><a href="#"><i class="iconfont icon-yingsaitong"></i>
+			<span>首页</span></a></div>
+		<div class="foot2"><a href="#"><i class="iconfont icon-guanzhu"></i>
+			<span>关注</span></a></div>
+		<div class="foot3"><a href="#"><i class="iconfont icon-shezhi"></i>
+			<span>设置</span></a></div>
+		</section>
+	</footer>
+</body>
+	
+	<script>
+		var app = angular.module('weater', ['ionic']);
+		//angular jquery react vue eno one;$urlRouterProvider负责处理在状态配置中指定的url路由方式之外的 url 请求的路由方式。
+		//ui路由 $stateProvider ng路由$routeProvider
+		//配置UI-路由
+		app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+			//$routeProvider.when
+			$stateProvider.state('index', {
+				//#/index
+				url: '/index',
+				templateUrl: 'views/index.html',
+				controller: 'indexCtrl'
+			}).state('detail', {
+				//#/home 根据类型，id确定哪一个对象
+				url: '/detail/:type/:id',
+				templateUrl: 'views/detail.html',
+				controller: 'detailCtrl'
+			}).state('index.a', {
+				url: '/a',
+				templateUrl: 'views/indexA.html',
+				controller: 'indexACtrl'
+			}).state('index.b', {
+				url: '/b',
+				templateUrl: 'views/indexA.html',
+				controller: 'indexBCtrl'
+			}).state('index.c', {
+				url: '/c',
+				templateUrl: 'views/indexA.html',
+				controller: 'indexCCtrl'
+			}).state('index.d', {
+				url: '/d',
+				templateUrl: 'views/indexA.html',
+				controller: 'indexDCtrl'
+			})
+			$urlRouterProvider.when('', '/index/a')
+		}]);
+		//主控制器
+	app.controller("indexCtrl", function($scope,$http,$rootScope) {
+	$scope.name = 'index';
+	$scope.on = true;
+	$scope.doRefresh = function() {
+	console.log("执行了刷新 了")
+	$scope.arrs = [];
+	$http.get('http://route.showapi.com/109-35', {
+	params: {
+	'showapi_appid': 26471,
+	'showapi_sign': '1a57093cc17948f99ad38b16f7a9204b',
+	'page': $rootScope.pageNum,
+	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+	'maxResult': 20 //每
+	}
+	})
+	.success(function(data) {
+	console.log(data);
+	
+	$scope.arrs = $scope.arrs.concat(data.showapi_res_body.pagebean.contentlist);
+	$scope.news = $scope.arrs;
+	})
+	.finally(function() {
+	$scope.$broadcast('scroll.refreshComplete');
+	});
+	};
+			});
+	//详情页
+//	app.controller("detailCtrl", function($scope, $http, $state, $rootScope) {
+//				console.log("详情页")
+//
+//			$scope.channelId = "";
+//	console.log($state.params);
+//	switch($state.params.type)
+//	{
+//	case "a":
+//	$scope.channelId = "5572a108b3cdc86cf39001cd";
+//	console.log("a");
+//	break;
+//	case "b":
+//	$scope.channelId = "5572a108b3cdc86cf39001cf";
+//	console.log("b");
+//	break;
+//	case "c":
+//	$scope.channelId = "5572a109b3cdc86cf39001db";
+//	console.log("c");
+//	break;
+//	case "d":
+//	$scope.channelId = "5572a108b3cdc86cf39001d3";
+//	console.log("d");
+//	break;
+//	}
+//	
+//	$rootScope.id = $state.params.id;
+//	$http.get("http://route.showapi.com/109-35", {
+//	params: {
+//	'showapi_appid': 25350,
+//	'showapi_sign': '5572a108b3cdc86cf39001cd',
+//	"channelId": $scope.channelId,
+//	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+////	'maxResult': 20 //每
+//	}
+//	}).success(function(data) {
+//	//				$scope.new = data.showapi_res_body.pagebean;
+//	console.log($state.params.id);//表示第几条
+//	//console.log(data.showapi_res_body.pagebean.contentlist);
+//	$scope.detail = data.showapi_res_body.pagebean.contentlist[$state.params.id];
+//	console.log($scope.detail);
+//	})
+//	});
+//详情页代码
+	app.controller("detailCtrl", ["$scope", "$http", "$state", "$rootScope", function($scope, $http, $state, $rootScope) {
+	console.log("详情页")
+	$scope.channelId = "";
+	console.log($state.params);
+	switch($state.params.type)
+
+	{
+
+	case "a":
+	$scope.channelId = "5572a108b3cdc86cf39001cd";
+	console.log("a");
+	break;
+	case "b":
+	$scope.channelId = "5572a108b3cdc86cf39001cf";
+	console.log("b");
+	break;
+	case "c":
+	$scope.channelId = "5572a109b3cdc86cf39001db";
+	console.log("c");
+	break;
+	case "d":
+	$scope.channelId = "5572a108b3cdc86cf39001d3";
+	console.log("d");
+	break;
+	}
+	//获取到当前的点击的是多少详情页面,并赋值给全局的
+	$rootScope.id = $state.params.id;
+	$http.get("http://route.showapi.com/109-35", {
+	params: {
+	'showapi_appid': 25350,
+	'showapi_sign': '5572a108b3cdc86cf39001cd',
+	"channelId": $scope.channelId,
+	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+	'maxResult': 20 //每
+	}
+	}).success(function(data) {
+	//				$scope.new = data.showapi_res_body.pagebean;
+	console.log($state.params.id)
+	console.log(data.showapi_res_body.pagebean.contentlist)
+	$scope.detail = data.showapi_res_body.pagebean.contentlist[$state.params.id];
+
+	})
+
+	}])
+		//控制器A
+	app.controller('indexACtrl', function($scope, $http, $rootScope,$state) {
+	$scope.pageNum = 1;
+	$rootScope.tab = 1;
+	$scope.loading = true;
+	$scope.arrs = [];
+	$scope.type = $state.current.url;
+	
+	//$rootScope.channelId="";
+	console.log($scope.type);
+	//console.log($rootScope.channelId);
+	console.log("执行了indexA页面");
+
+	//定义一个全局函数
+	var getNews = function(channelId) {
+	$http.get("http://route.showapi.com/109-35", {
+	params: {
+	'showapi_appid': 25350,
+	'showapi_sign': "5572a108b3cdc86cf39001cd",
+	'page': $scope.pageNum,
+	"channelId": channelId,
+	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+	'maxResult': 20 //每
+	}
+	}).success(function(data) {
+	$scope.loading = false;
+	//将获取的页面的详情页， 保存对应的唯一ID；
+	$rootScope.channelId = data.showapi_res_body.pagebean.contentlist[0].channelId;
+	//这里是获取的数据
+	console.log($rootScope.channelId);
+	//这里是获取的下标
+	//数据已经获取到了
+	$scope.arrs = $scope.arrs.concat(data.showapi_res_body.pagebean.contentlist);
+	console.log($scope.arrs);
+	$scope.news = $scope.arrs;
+	console.log($scope.news)
+	})
+	};
+	$scope.loadMore = function() {
+	console.log("click");
+	$scope.loading = true;
+	$scope.pageNum++;
+	getNews("5572a108b3cdc86cf39001cd");
+	}
+	//调用函数
+	getNews("5572a108b3cdc86cf39001cd");
+		})
+		
+		//控制器B
+	app.controller('indexBCtrl', function($scope, $http, $rootScope,$state) {
+	$rootScope.tab = 2;
+	$scope.pageNum = 1;
+	$scope.loading = true;
+	$scope.arrs = [];
+	$scope.type = $state.current.url;
+	//$rootScope.channelId="";
+	console.log($scope.type);
+	//console.log($rootScope.channelId);
+	console.log("执行了indexB页面");
+
+	//定义一个全局函数
+	var getNews = function(channelId) {
+	$http.get("http://route.showapi.com/109-35", {
+	params: {
+	'showapi_appid': 25350,
+	'showapi_sign': "5572a108b3cdc86cf39001cd",
+	'page': $scope.pageNum,
+	"channelId": channelId,
+	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+	'maxResult': 20 //每
+	}
+	}).success(function(data) {
+	$scope.loading = false;
+
+	//将获取的页面的详情页， 保存对应的唯一ID；
+	$rootScope.channelId = data.showapi_res_body.pagebean.contentlist[0].channelId;
+	//这里是获取的数据
+	console.log($rootScope.channelId);
+	//这里是获取的下标
+	//数据已经获取到了
+	$scope.arrs = $scope.arrs.concat(data.showapi_res_body.pagebean.contentlist);
+	console.log($scope.arrs);
+	$scope.news = $scope.arrs;
+
+	})
+	};
+	$scope.loadMore = function() {
+	console.log("click");
+	$scope.loading = true;
+	$scope.pageNum++;
+	getNews("5572a108b3cdc86cf39001cf");
+	}
+	//调用函数
+	getNews("5572a108b3cdc86cf39001cf");
+		})
+	//控制器C	
+	app.controller('indexCCtrl', function($scope, $http, $rootScope,$state) {
+			$rootScope.tab = 3;
+			$scope.loading = true;
+			$scope.arrs = [];
+			$scope.type = $state.current.url;
+	//$rootScope.channelId="";
+	console.log($scope.type);
+	//console.log($rootScope.channelId);
+	console.log("执行了indexA页面");
+
+	//定义一个全局函数
+	$rootScope.getNews = function(channelId) {
+	$http.get("http://route.showapi.com/109-35", {
+	params: {
+	'showapi_appid': 25350,
+	'showapi_sign': '5572a108b3cdc86cf39001cd',
+	'page': $scope.pageNum,
+	"channelId": channelId,
+	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+	'maxResult': 20 //每
+	}
+	}).success(function(data) {
+	$scope.loading = false;
+	//将获取的页面的详情页， 保存对应的唯一ID；
+	$rootScope.channelId = data.showapi_res_body.pagebean.contentlist[0].channelId;
+	//这里是获取的数据
+	console.log($rootScope.channelId);
+	//这里是获取的下标
+	//数据已经获取到了
+	$scope.arrs = $scope.arrs.concat(data.showapi_res_body.pagebean.contentlist);
+	console.log($scope.arrs);
+	$scope.news = $scope.arrs;
+
+	})
+	};
+	$rootScope.loadMore = function() {
+	console.log("click");
+	$scope.loading = true;
+	$scope.pageNum++;
+	$rootScope.getNews("5572a109b3cdc86cf39001db");
+	}
+	//调用函数
+	$rootScope.getNews("5572a109b3cdc86cf39001db");
+		})
+	//控制器D
+	app.controller('indexDCtrl', function($scope, $http, $rootScope, $state) {
+	$rootScope.tab = 4;
+	$scope.pageNum = 1;
+	$scope.loading = true;
+	$scope.arrs = [];
+	$scope.type = $state.current.url;
+	//$rootScope.channelId="";
+	console.log($scope.type);
+	//console.log($rootScope.channelId);
+	console.log("执行了indexA页面");
+
+	//定义一个全局函数
+	$rootScope.getNews = function(channelId) {
+	$http.get("http://route.showapi.com/109-35", {
+	params: {
+	'showapi_appid': 25350,
+	'showapi_sign': '5572a108b3cdc86cf39001cd', //这里写数据
+	'page': $scope.pageNum,
+	"channelId": channelId,
+	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+	'maxResult': 20 //每
+	}
+	}).success(function(data) {
+	$scope.loading = false;
+	//将获取的页面的详情页， 保存对应的唯一ID；
+	console.log(data)
+	$rootScope.channelId = data.showapi_res_body.pagebean.contentlist[0].channelId;
+	//这里是获取的数据
+	//						console.log($rootScope.channelId);
+	//这里是获取的下标
+	//数据已经获取到了
+	$scope.arrs = $scope.arrs.concat(data.showapi_res_body.pagebean.contentlist);
+	console.log($scope.arrs);
+	$scope.news = $scope.arrs;
+
+	})
+	};
+	$rootScope.loadMore = function() {
+	console.log("click");
+	$scope.loading = true;
+	$scope.pageNum++;
+	$rootScope.getNews("5572a108b3cdc86cf39001d3");
+	}
+	//调用函数
+	$rootScope.getNews("5572a108b3cdc86cf39001d3");
+		})
+	//组件weuiTab
+		app.directive('weuiTab', function() {
+			return {
+				templateUrl: 'directives/weuiTab.html'
+			}
+		})
+//		app.directive('swipe', function($interval) {
+//			return {
+//				templateUrl: 'directives/swipe.html',
+//				link: function(scope, elm, attr) {
+//					elm.find('ul');
+//					var imgLen = elm.find('li').length;
+//					var curIndex = 0;
+//					$interval(function() {
+//						if(curIndex < imgLen - 1) {
+//							curIndex++;
+//						} else {
+//							curIndex = 0;
+//						}
+//						changeTo(curIndex);
+//					}, 2500)
+//					console.log(elm.find('ul'));
+//
+//					function changeTo(num) {
+//						var goLeft = num * 440;
+//						elm.find('ul').css('transition', 'all 2.5s');
+//						elm.find('ul').css('left', "-" + goLeft + "px");
+//					}
+//				}
+//			}
+//		})
+	</script>
+<!--<script src="script/angular.js"></script>
+	<script src="script/ui-route.js"></script>
+	<script src="script/angular-animate.js"></script>-->
+</html>

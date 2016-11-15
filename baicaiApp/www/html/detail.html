@@ -1,0 +1,24 @@
+<!--<weui-tab></weui-tab>-->
+<article class="weui-article">
+	<h1>{{detail.title}}</h1>
+	<section>
+		<h2 class="title">{{detail.source}}</h2>
+		<section>
+			<!--<h3>1.1 节标题</h3>-->
+			<p ng-if="detail.imageurls[0].url">
+				<img ng-src="{{n.url}}" alt="" ng-repeat="n in detail.imageurls">
+				<!--<img src="./images/pic_article.png" alt="">-->
+			</p>
+			<p>
+				{{detail.desc}}
+				<!--Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.-->
+			</p>
+		</section>
+		<!--<section>
+			<h3>{{new.title}}</h3>
+			<p>
+				{{new.content}}
+			</p>
+		</section>-->
+	</section>
+</article>

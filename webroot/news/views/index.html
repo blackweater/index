@@ -1,0 +1,24 @@
+<ion-content>
+	<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
+<div class="weui-search-bar {{search?'weui-search-bar_focusing':''}}" id="search_bar" style="position: absolute; top: 50px; width: 100%;">
+	<form class="weui-search-bar__form">
+		<div class="weui-search-bar__box">
+			<i class="weui-icon-search"></i>
+			<input type="search" class="weui-search-bar__input" id="search_input" placeholder="搜索" ng-focus="search=!search" ng-model="searchInput" />
+			<a href="javascript:" class="weui-icon-clear" id="search_clear"></a>
+		</div>
+		<label for="search_input" class="weui-search-bar__label" id="search_text">
+            <i class="weui-icon-search"></i>
+            <span>搜索</span>
+        </label>
+	</form>
+	<a ng-click="search=!search" class="weui-search-bar__cancel-btn" id="search_cancel">取消</a>
+</div>
+<!--轮播图组件-->
+<!--<swipe></swipe>-->
+<div style="position: absolute; top: 94px; width: 100%;">
+	<!--有动画  class="rotate"-->
+	<!--<div ui-view="" class="rotate"></div>-->
+	<div ui-view="" id="content"></div>
+</div>
+</ion-content>

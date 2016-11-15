@@ -1,0 +1,64 @@
+<!--这里是加载的一个模板，获取不同的数据添加到页面上， 如果是头条的接口，就获取头条，是军事就获取军事，并渲染到对应的内容区-->
+<div class="weui-panel weui-panel_access">
+	<div class="weui-panel__hd">省流量模式(不加载图片)
+		<div class="weui-cell__ft" style="display: inline-block; float: right;">
+			<input class="weui-switch" type="checkbox" style="top: -8px;" ng-click="orderBy=!orderBy$$on!=on" ng-model="on"/>
+		</div>
+	</div>
+	<div class="weui-panel__bd">
+		<!--<a ng-href="{{news[0].link}}" class="weui-media-box weui-media-box_appmsg">-->
+		<a ng-href="#/detail{{type}}/{{$index}}" class="weui-media-box weui-media-box_appmsg" ng-repeat="new in news">
+			<!--有图片的情况下-->
+			<!--<div ng-if="new.imageurls[0].url">-->
+			<div class="weui-media-box__hd" ng-if="on&&new.imageurls[0].url">
+				<!--用ng-if判断 news[0].imageurls[0].url 的真假 如果它返回真的话就说明有图片返回 -->
+				<img class="weui-media-box__thumb" ng-src="{{new.imageurls[0].url?new.imageurls[0].url:'images/49a3d688d43f879410c83fd5d21b0ef41ad53a78.png'}}" alt="">
+				<!--没有图片的时候走下面的判断-->
+				<!--vue-->
+				<!--ng-show ng-hide-->
+				<!--<div ng-if="!news[0].imageurls[0].url">
+					<img class="weui-media-box__thumb" src="images/49a3d688d43f879410c83fd5d21b0ef41ad53a78.png" alt="">
+				</div>-->
+			</div>
+			<div class="weui-media-box__bd" ng-if="new.imageurls[0].url">
+				<h4 class="weui-media-box__title">{{new.title?new.title:'加载中...'}}</h4>
+				<p class="weui-media-box__desc">{{new.desc?new.desc:'加载中...'}}</p>
+				<!--<div ng-if="!news[0].title">
+					<h4 class="weui-media-box__title">加载中...</h4>
+					<p class="weui-media-box__desc">加载中...</p>
+				</div>-->
+			</div>
+			<!--</div>-->
+			<div ng-if="!new.imageurls[0].url">
+				<div class="weui-media-box">
+					<h4 class="weui-media-box__title">{{new.title?new.title:'加载中...'}}</h4>
+					<p class="weui-media-box__desc">{{new.desc?new.desc:'加载中...'}}</p>
+				</div>
+			</div>
+		</a>
+
+	</div>
+	<!--如果页面正在请求数据的时候，要隐藏这个按钮-->
+	<div class="weui-panel__ft" ng-show="loading">
+		<a href="javascript:;" class="weui-cell weui-cell_access weui-cell_link">
+			<div class="weui-cell__bd">正在加载...</div>
+			<span class="weui-cell__ft"></span>
+		</a>
+	</div>
+	<!--如果页面请求完数据的时候，显示这个按钮-->
+	<div class="weui-panel__ft" ng-show="!loading">
+		<a class="weui-cell weui-cell_access weui-cell_link" ng-click="loadMore()">
+			<div class="weui-cell__bd">查看更多</div>
+			<span class="weui-cell__ft"></span>
+		</a>
+	</div>
+</div>
+<!--根据loading变量决定是否显示这个loading 布尔值如果这个请求结果成功是不是false 如果请求一直不成功true-->
+<div class="loading" ng-show="loading" style="position: fixed;
+		z-index: 20;
+		top: 50%;
+		left: 50%;
+		margin-left: -25px;
+		margin-top: -27px;">
+	<img src="img/loading.gif" />
+</div>

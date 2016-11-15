@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html ng-app="weater">
+	<head>
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+		<meta charset="UTF-8">
+		<title>今日头条</title>	
+		<script src="js/ionic.bundle.min.js"></script>
+	<link rel="stylesheet" href="css/ionic.css" />
+	<link rel="stylesheet" href="css/weui.css" />	
+	<link rel="stylesheet" href="css/iconfont.css">	
+	</head>
+	<body>
+		<weui-tab></weui-tab>
+		<div ui-view=""></div>
+	<footer>
+		<section class="fot">
+		<div class="foot1"><a href="#"><i class="iconfont icon-yingsaitong"></i>
+			<span>首页</span></a></div>
+		<div class="foot2"><a href="#"><i class="iconfont icon-guanzhu"></i>
+			<span>关注</span></a></div>
+		<div class="foot3"><a href="#"><i class="iconfont icon-shezhi"></i>
+			<span>设置</span></a></div>
+		</section>
+	</footer>
+</body>
+	
+	<script>
+		var app = angular.module('weater', ['ionic']);
+		//angular jquery react vue eno one;$urlRouterProvider负责处理在状态配置中指定的url路由方式之外的 url 请求的路由方式。
+		//ui路由 $stateProvider ng路由$routeProvider
+		app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+			//$routeProvider.when
+			$stateProvider.state('index', {
+				//#/index
+				url: '/index',
+				templateUrl: 'views/index.html',
+				controller: 'indexCtrl'
+			}).state('detail', {
+				//#/home
+				url: '/detail/:id',
+				templateUrl: 'views/detail.html',
+				controller: 'detailCtrl'
+			}).state('index.a', {
+				url: '/a',
+				templateUrl: 'views/indexA.html',
+				controller: 'indexACtrl'
+			}).state('index.b', {
+				url: '/b',
+				templateUrl: 'views/indexB.html',
+				controller: 'indexBCtrl'
+			})
+			$urlRouterProvider.when('', '/index/a')
+		}]);
+//		//创建服务
+//app.service('book',['$rootScope',function($rootScope){
+//  var service = {
+//      books:[{tit:'Magician',author:'malu'},
+//             {tit:'Magician',author:'malu'}
+//      ],
+//      addBook: function(book){
+//          service.books.push(book);
+//          $rootScope.$broadcast('books.update');
+//      }
+//  }
+//  return service;
+//}]);
+//		app.service('News', ['$scope','$rootScope','$http','$state',function($scope,$rootScope,$http,$state) {
+// 		
+//	       	this.getNews=function(){
+//	        		$http.get("http://route.showapi.com/109-35", {
+//					params: {
+//						'showapi_appid': 25350,
+//						'showapi_sign': '5572a108b3cdc86cf39001cd',
+//						'page': $rootScope.pageNum,
+//						'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+//						'maxResult': 20 //每
+//					}
+//				}).success(function(data) {
+//		$scope.new = data.showapi_res_body.pagebean.contentlist[$state.params.id];
+//					console.log($scope.new)
+//					console.log("执行了这里的代码")
+//			
+//				})
+//			} 	
+// 			 
+//		}]);
+		
+		app.controller("indexCtrl", function($scope,$http,$rootScope) {
+				$scope.name = 'index';
+				$scope.doRefresh = function() {
+	console.log("执行了刷新 了")
+	$scope.arrs = [];
+	$http.get('http://route.showapi.com/109-35', {
+	params: {
+	'showapi_appid': 26471,
+	'showapi_sign': '1a57093cc17948f99ad38b16f7a9204b',
+	'page': $rootScope.pageNum,
+	'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+	'maxResult': 20 //每
+	}
+	}).success(function(data) {
+	console.log(data);
+	//      		console.log(data.showapi_res_body.pagebean.contentlist[$state.params.id])
+	//$scope.new = data.showapi_res_body.pagebean.contentlist[$state.params.id];
+	$scope.arrs = $scope.arrs.concat(data.showapi_res_body.pagebean.contentlist);
+	$scope.news = $scope.arrs;
+	})
+	.finally(function() {
+	$scope.$broadcast('scroll.refreshComplete');
+	});
+	};
+				
+		});
+		app.controller("detailCtrl", function($scope, $http, $state, $rootScope) {
+				console.log("详情页")
+				$http.get("http://route.showapi.com/109-35", {
+					params: {
+						'showapi_appid': 25350,
+						'showapi_sign': '5572a108b3cdc86cf39001cd',
+						'page': $rootScope.pageNum,
+						'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+						'maxResult': 20 //每
+					}
+				}).success(function(data) {
+						
+					//				$scope.new = data.showapi_res_body.pagebean;
+					//console.log(data.showapi_res_body.pagebean.contentlist[$state.params.id])
+					$scope.new = data.showapi_res_body.pagebean.contentlist[$state.params.id];
+					console.log($scope.new)
+					console.log("执行了这里的代码");
+					
+				})
+				
+			});
+		
+		app.controller('indexACtrl', function($scope, $http, $rootScope,$state) {
+			$scope.loading = true;
+			$rootScope.tab = 1;
+//			News.getNews();
+			//默认第一页
+			$rootScope.pageNum = 1;
+			//定义一个空数组存放的是列表显示的新闻
+			$scope.arrs = [];
+			
+//			var getNews = function() {
+//					$http.get('http://route.showapi.com/109-35', {
+//					params: {
+//						'showapi_appid': 26471,
+//						'showapi_sign': '1a57093cc17948f99ad38b16f7a9204b',
+//						'page': $rootScope.pageNum,
+//						//使用当前时间"showapi_timestamp": formatterDateTime(),	
+//						'needContent': 1, //是否需要返回正文，1为需要，其他为不需要
+////						'maxResult': 20 //每
+//					}
+//			}).success(function(data) {
+//				console.log(data);
+//				//console.log(data.showapi_res_body.pagebean.contentlist);
+//				//console.log(data.showapi_res_body.pagebean.contentlist[$state.params.id])
+//				//$scope.new = data.showapi_res_body.pagebean.contentlist[$state.params.id];
+//				$scope.arrs = $scope.arrs.concat(data.showapi_res_body.pagebean.contentlist);
+//				console.log($scope.arrs);
+//				$scope.news = $scope.arrs;
+//				$scope.loading=false;
+//			})
+//				};
+//			$scope.refresh = function(){
+//				getNews().finally(function(){
+//					//把下拉的loading弹回去
+//					$scope.$broadcast('scroll.refreshComplete');
+//				})
+//			}
+			//getNews();
+			//下拉刷新 
+	
+				//进来的时候先加载数据一次
+//			getNews();
+//			$scope.loadMore = function() {
+//				//每点击加载更多前，出现loading
+//				$scope.loading = true;
+//				//每点击一次的时候，请求下一页
+////				$scope.offset++;
+//				console.log("加载更多");
+//				getNews();
+//			}
+		})
+		app.controller('indexBCtrl', function($scope, $http, $rootScope) {
+			$rootScope.tab = 2;
+		})
+		app.directive('weuiTab', function() {
+			return {
+				templateUrl: 'directives/weuiTab.html'
+			}
+		})
+//		app.directive('swipe', function($interval) {
+//			return {
+//				templateUrl: 'directives/swipe.html',
+//				link: function(scope, elm, attr) {
+//					elm.find('ul');
+//					var imgLen = elm.find('li').length;
+//					var curIndex = 0;
+//					$interval(function() {
+//						if(curIndex < imgLen - 1) {
+//							curIndex++;
+//						} else {
+//							curIndex = 0;
+//						}
+//						changeTo(curIndex);
+//					}, 2500)
+//					console.log(elm.find('ul'));
+//
+//					function changeTo(num) {
+//						var goLeft = num * 440;
+//						elm.find('ul').css('transition', 'all 2.5s');
+//						elm.find('ul').css('left', "-" + goLeft + "px");
+//					}
+//				}
+//			}
+//		})
+	</script>
+<!--<script src="script/angular.js"></script>
+	<script src="script/ui-route.js"></script>
+	<script src="script/angular-animate.js"></script>-->
+</html>

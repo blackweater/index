@@ -1,0 +1,11 @@
+<xheader></xheader>
+<!--头部-->
+<ion-content>
+	<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
+	<!--这里是加载的一个模板，获取不同的数据添加到页面上， 如果是头条的接口，就获取头条，是军事就获取军事，并渲染到对应的内容区-->
+	<div id="" ui-view="">
+
+	</div>
+</ion-content>
+<!--底部-->
+<xfooter></xfooter>
